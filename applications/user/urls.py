@@ -6,8 +6,6 @@ from . import views
 
 
 urlpatterns = [
-    path('fcm/', views.NotificationFCM.as_view()),
-    path('filter/user/<token>', views.UserFilter.as_view()),
     path('school/', views.SchoolsJSON.as_view()),
     path('add/user/', views.UserRegister.as_view())
 ]

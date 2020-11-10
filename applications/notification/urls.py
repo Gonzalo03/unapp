@@ -4,12 +4,7 @@ from rest_framework import routers
 
 from . import views
 
-
-router = routers.DefaultRouter()
-router.register('api/notice', views.NoticeViewset)
-
-
 urlpatterns = [
-    path('', include(router.urls)),
+    path('fcm/', views.NotificationFCM.as_view()),
     
 ]

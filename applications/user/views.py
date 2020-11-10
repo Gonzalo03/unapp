@@ -1,34 +1,26 @@
 from pyfcm import FCMNotification
-import requests
 
 from django.views.generic import View
 from django.forms.models import model_to_dict
 from django.http import HttpResponse, JsonResponse
-from django.db.models import QuerySet
-
-from  rest_framework import viewsets 
-from rest_framework.generics import ListAPIView
+from django.utils.decorators import method_decorator
+from django.views.decorators.csrf import csrf_exempt
 
 
 from .models import User, School
-from .serializers import UserSerializer, SchoolSerializer
 
 
 # Create your views here.
 
-class UserFilter(ListAPIView):
-
-    serializer_class = UserSerializer
-
-    def get_queryset(self):
-        return User.objects.filter(
-            token = self.kwargs.get('token', '')
-        )
-
-
 class UserRegister(View):
     
     #TODO hacer la logica get y post del registro
+
+    @method_decorator(csrf_exempt)
+    def dispatch(self, request, *args, **kwargs):
+        return super(UserRegister, self).dispatch(request, *args, **kwargs)
+    
+
     def get(self, request):
 
             return HttpResponse('Aqui es el registro de usuarios')
@@ -49,6 +41,13 @@ class UserRegister(View):
         
         return HttpResponse('Registro correcto') if user[1] else HttpResponse('Cuenta existente')
 
+
+class UserLogin(View): 
+
+    def get(self, request):
+        return HttpResponse('Este es el login')
+    
+
 class SchoolsJSON(View):
     
     def get(self, request):
@@ -65,24 +64,5 @@ class SchoolsJSON(View):
         return JsonResponse(context)
 
 
-class NotificationFCM(View):
-
-    def get(self, request):
-
-        request = requests.get('http://goxx.pythonanywhere.com/api/notification/?format=json')
-
-        push_service = FCMNotification(api_key='AAAA9Ko7Kvw:APA91bFQXYNGsPfXaNx8akVvZVfEJrTw_ZUB_DPmXkWmL-YY0MVRPrvchpqyoQphhzSpHz39Z8pH-7yUlCniIvvU8pU7sLrcN3a2BHsWR-UXlS0CotrFS-vLy95YLOfebUo_w0AAHLHO')
-        
-        r = push_service.notify_single_device(
-            registration_id='cxTy09o8nV4:APA91bEwBZIZ-aqyS1mJVStZxwNLrYEEFttbUL_cBpUV4WtaqYGNG7xs_xJz4fWN0542tZ3w7aA8c_eZz1iwekzP_MfENgnVBKBMKv0HIT1QO46AhyuOMdXJh2qkC5oM6cJP6S81RnPE',
-            message_title= request.json()[0]['tittle'],
-            message_body= request.json()[0]['body'],
-            message_icon= 'pta'
-
-        )
-         
-        print(r)
-
-        return HttpResponse('push concluido') if r else HttpResponse('Push fallido')
 
 
