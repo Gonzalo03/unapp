@@ -39,7 +39,7 @@ class UserRegister(View):
         user[0].school.set(request.POST.get('school').split(','))
         user[0].save()
         
-        return HttpResponse('Registro correcto') if user[1] else HttpResponse('Cuenta existente')
+        return JsonResponse({"estado" : True}) if user[1] else JsonResponse({"estado" : False})
 
 
 class UserLogin(View): 
