@@ -1,48 +1,108 @@
 {% extends 'common/base.html' %}
 
 {% block tittle %}
-    Notification
+Notification
 {% endblock tittle %}
 
 
-{% block content %}
-    
-<div class="container-fluid mb-5">
-
-    <div class="row">
-
-        <div class="col text-center">
-
-            <h1>Envio de Notificaciones push</h1>
-
-        </div>
-
-    </div>
-
-</div>
+{% block head %}
 
 <div class="container">
 
-    <div class="row">
+    <div class="row d-flex flex-row pt-3">
 
-        <div class="col-sm-12 col-md-6 offset-md-3">
-   
-        <form>
-            <div class="form-group">
-              <label for="">Titulo de la notificacion</label>
-              <input type="text" class="form-control" id="" aria-describedby="tittleNotification">
-              <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small>
-            </div>
-            <div class="form-group">
-              <label for="">Cuerpo de la notificacion</label>
-              <input type="text" class="form-control" id="">
-            </div>
-            <button type="submit" class="btn btn-primary">enviar</button>
-          </form>
+        <div class="col-12">
+
+            <h1>Dashboard de notificaciones</h1>
+
         </div>
+
+        <div class="col-12">
+
+            <!-- Button trigger modal -->
+            <button type="button" class="btn btn-outline-success" data-toggle="modal" data-target="#exampleModalLong">
+                Nueva Notificacion
+            </button>
+
+            <!-- Modal -->
+            <div class="modal fade" id="exampleModalLong" tabindex="-1" role="dialog"
+                aria-labelledby="exampleModalLongTitle" aria-hidden="true">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalLongTitle">Nueva notificación</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <form method="GET">  
+                                <div class="form-group">
+                                    <label for="tittle">Titulo de la Notificación</label>
+                                    <input type="text" class="form-control" id="tittle" aria-describedby="tittle" name="titulo">
+                                </div>
+                                <div class="form-group">
+                                    <label for="content">Contenido</label>
+                                    <textarea class="form-control" id="content" rows="3" name="contenido"></textarea>
+                                </div>
+                                <div class="form-group">
+                                    <label for="mul">Facultades</label>
+                                    <select class="custom-select" id="mul" multiple="multiple" name="fac[]">
+                                       
+                                       {% for s in school %}
+                                       <option value="{{s.id}}" selected="selected">{{s.name}}</option>
+                                       {% endfor %}
+                                           
+                                    </select>
+                                </div>
+                                <button type="submit" class="btn btn-outline-success">Enviar</button>
+                            </form>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-outline-danger" data-dismiss="modal">Close</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
     </div>
 </div>
+{% endblock head %}
 
-{% endblock content %}
-    
-    
+
+{% block body %}
+<div class="container">
+
+    <div class="row py-3">
+
+        <div class="col">
+
+            <table class="table">
+                <thead class="thead-light">
+                    <tr>
+                        <th scope="col">#</th>
+                        <th scope="col">Titulo</th>
+                        <th scope="col">Mensaje</th>
+                        <th scope="col">Facultades</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <th scope="row">1</th>
+                        <td>Mark</td>
+                        <td>Otto</td>
+                        <td>@mdo</td>
+                    </tr>
+                    <tr>
+                </tbody>
+            </table>
+
+
+        </div>
+
+    </div>
+
+</div>
+{% endblock body %}

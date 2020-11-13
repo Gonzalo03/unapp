@@ -13,12 +13,20 @@
 </head>
 
     
-    {% block content %}
+    {% block head %}
         
-    {% endblock content %}
+    {% endblock head %}
         
 
 <body>
     
+    {% block body %}
+        
+    {% endblock body %}
+        
+
+    <script src="{% static 'js/jquery.js' %}"></script>
+    <script src="{% static 'js/bootstrap.min.js' %}"></script>
+    <script src="{% static 'js/custom.js' %}"></script>
 </body>
 </html>

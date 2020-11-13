@@ -44,9 +44,20 @@ class UserRegister(View):
 
 class UserLogin(View): 
 
+    @method_decorator(csrf_exempt)
+    def dispatch(self, request, *args, **kwargs):
+        return super(UserLogin, self).dispatch(request, *args, **kwargs)
+
     def get(self, request):
+
         return HttpResponse('Este es el login')
-    
+
+    def post(self, request):
+
+        user_id = User.objects.filter(dni = request.POST.get('dni'))
+        user_pass = User.objects.filter(dni = request.POST.get('password'))
+
+        return True if user_id and user_pass else False
 
 class SchoolsJSON(View):
     

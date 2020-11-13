@@ -7,5 +7,6 @@ from . import views
 
 urlpatterns = [
     path('school/', views.SchoolsJSON.as_view()),
-    path('add/user/', views.UserRegister.as_view())
+    path('add/user/', views.UserRegister.as_view()),
+    path('login/', views.UserLogin.as_view())
 ]
