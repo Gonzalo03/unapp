@@ -1,4 +1,6 @@
 from pyfcm import FCMNotification
+from .custom import Validate
+
 
 from django.views.generic import View
 from django.forms.models import model_to_dict
@@ -23,23 +25,41 @@ class UserRegister(View):
 
     def get(self, request):
 
-            return HttpResponse('Aqui es el registro de usuarios')
+        return HttpResponse('Aqui es el registro de usuarios')
 
     def post(self, request):
-
-        user = User.objects.get_or_create(
-            name = request.POST.get('name'),
-            last_name = request.POST.get('last_name'),
-            dni = request.POST.get('dni'),
-            email = request.POST.get('email'),
-            password = request.POST.get('password'),
-            token = request.POST.get('token')
-        )
-
-        user[0].school.set(request.POST.get('school').split(','))
-        user[0].save()
         
-        return JsonResponse({"estado" : True}) if user[1] else JsonResponse({"estado" : False})
+        validate = Validate(request.POST.get('dni'),request.POST.get('email'))
+
+        
+        
+        if(validate.lenghtDNI() and validate.VerifyEmail()):
+
+            if(not validate.checkDNI() and not validate.CheckEmail()):
+
+                user = User.objects.create(
+                    name = request.POST.get('name'),
+                    last_name = request.POST.get('last_name'),
+                    dni = request.POST.get('dni'),
+                    email = request.POST.get('email'),
+                    password = request.POST.get('password'),
+                    token = request.POST.get('token')
+                    )
+
+                user.school.set(request.POST.get('school').split(','))
+                user.save()
+        
+                return JsonResponse({'estado' : 'Cuenta creada'})
+            
+            else: 
+                
+                return JsonResponse({'estado' : 'Cuenta existente'})
+
+        else:
+
+            return JsonResponse({'estado' : 'Campo de Dni o Email no valido'})
+
+        
 
 
 class UserLogin(View): 
@@ -54,25 +74,16 @@ class UserLogin(View):
 
     def post(self, request):
 
-        user_id = User.objects.filter(dni = request.POST.get('dni'))
-        user_pass = User.objects.filter(dni = request.POST.get('password'))
+        userDNI = User.objects.filter(dni = request.POST.get('dni'))
+        userPass = User.objects.filter(password = request.POST.get('password'))
 
-        return True if user_id and user_pass else False
+        return True if userDNI and userPass else False
 
 class SchoolsJSON(View):
     
     def get(self, request):
 
-        lista_facultades = []
-
-        for f in School.objects.all():
-            lista_facultades.append(model_to_dict(f))
-
-        context = {}    
-
-        context['Facultades'] = lista_facultades
-
-        return JsonResponse(context)
+        return JsonResponse({'facultades' : [model_to_dict(s) for s in School.objects.all()]})
 
 
 

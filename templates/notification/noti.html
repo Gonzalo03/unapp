@@ -1,4 +1,5 @@
 {% extends 'common/base.html' %}
+{% load static %}
 
 {% block tittle %}
 Notification
@@ -36,26 +37,60 @@ Notification
                             </button>
                         </div>
                         <div class="modal-body">
-                            <form method="GET">  
+                            <form method="POST" enctype="multipart/form-data">  {% csrf_token %}
+                               <div class="form-group">
+                                    <label for="{{formPreview.tittleNotification.id_for_label}}">
+                                        {{formPreview.tittleNotification.label}}
+                                    </label>
+                                    {{formPreview.tittleNotification}}
+                                    {{formPreview.tittleNotification.errors}}
+                               </div>
+                               <div class="form-group">
+                                    <label for="{{formPreview.bodyNotification.id_for_label}}">
+                                        {{formPreview.bodyNotification.label}}
+                                    </label>
+                                   {{formPreview.bodyNotification}}
+                                   {{formPreview.bodyNotification.errors}}
+                               </div>
+                                <h4 class="text-center">Datos de la notificación</h4>
                                 <div class="form-group">
-                                    <label for="tittle">Titulo de la Notificación</label>
-                                    <input type="text" class="form-control" id="tittle" aria-describedby="tittle" name="titulo">
+                                    <label for="{{formData.tittle.id_for_label}}">
+                                        {{formData.tittle.label}}
+                                    </label>
+                                    {{formData.tittle}}
+                                    {{formData.tittle.errors}}
                                 </div>
                                 <div class="form-group">
-                                    <label for="content">Contenido</label>
-                                    <textarea class="form-control" id="content" rows="3" name="contenido"></textarea>
+                                    <label for="{{formData.body.id_for_label}}">
+                                        {{formData.body.label}}
+                                    </label>
+                                    {{formData.body}}
+                                    {{formData.body.errors}}
                                 </div>
                                 <div class="form-group">
-                                    <label for="mul">Facultades</label>
-                                    <select class="custom-select" id="mul" multiple="multiple" name="fac[]">
-                                       
-                                       {% for s in school %}
-                                       <option value="{{s.id}}" selected="selected">{{s.name}}</option>
-                                       {% endfor %}
-                                           
-                                    </select>
-                                </div>
-                                <button type="submit" class="btn btn-outline-success">Enviar</button>
+                                    <label for="{{formData.icon.id_for_label}}">
+                                        {{formData.icon.label}}
+                                    </label>
+                                    {{formData.icon}}
+                                    {{formData.icon.errors}}
+                                  </div>
+                                  <div class="form-group">
+                                    <label for="{{formData.admin.id_for_label}}">
+                                        {{formData.admin.label}}
+                                    </label>
+                                    {{formData.admin}}
+                                    {{formData.admin.errors}}
+                                  </div>
+                                  <div class="form-group">
+                                    <label for="{{formData.schools.id_for_label}}">
+                                        {{formData.schools.label}}
+                                    </label>
+                                    {{formData.schools}}
+                                    {{formData.schools.errors}}
+                                  </div>
+                                  <div class="form-group">
+                                    <button type="submit" class="btn btn-outline-success">Enviar</button>
+                                  </div>
                             </form>
                         </div>
                         <div class="modal-footer">
@@ -78,24 +113,29 @@ Notification
     <div class="row py-3">
 
         <div class="col">
-
+            
             <table class="table">
                 <thead class="thead-light">
                     <tr>
-                        <th scope="col">#</th>
+                        <th scope="col">N°</th>
                         <th scope="col">Titulo</th>
                         <th scope="col">Mensaje</th>
                         <th scope="col">Facultades</th>
                     </tr>
                 </thead>
-                <tbody>
+                <tbody>                 
+                    {% for n in Notification %}
                     <tr>
-                        <th scope="row">1</th>
-                        <td>Mark</td>
-                        <td>Otto</td>
-                        <td>@mdo</td>
+                        <th scope="row">{{n.id}}</th>
+                        <td>{{n.tittle}}</td>
+                        <td>{{n.body}}</td>
+                        <td><ul>                         
+                            {% for s in n.schools.all %}
+                                <li>{{s.name}}</li>
+                            {% endfor %}                           
+                        </ul></td>
                     </tr>
-                    <tr>
+                    {% endfor %}
                 </tbody>
             </table>
 
@@ -106,3 +146,6 @@ Notification
 
 </div>
 {% endblock body %}
+
+
+{% block customJS %}<script src="{% static 'js/notification/selectFilter.js' %}"></script>{% endblock customJS %}

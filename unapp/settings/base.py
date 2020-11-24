@@ -35,8 +35,7 @@ INSTALLED_APPS = [
     'applications.notification',
     'applications.user',
     #third-part apps
-    'rest_framework',
-    'corsheaders'
+    'rest_framework'
     
 ]
 

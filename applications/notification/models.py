@@ -3,7 +3,7 @@ from django.db import models
 from model_utils.models import TimeStampedModel
 
 from applications.administrator.models import Admin
-from applications.user.models import User
+from applications.user.models import User, School
 
 # Create your models here.
 
@@ -14,7 +14,7 @@ class Notification(TimeStampedModel):
     body = models.CharField('Cuerpo', max_length=50)
     icon = models.ImageField('Icono', upload_to='iconos', height_field=None, width_field=None, max_length=None)
     admin = models.ForeignKey(Admin, on_delete=models.CASCADE, verbose_name = 'Administrador')
-    user = models.ManyToManyField(User, verbose_name = 'Usuario')
+    schools = models.ManyToManyField(School, verbose_name= 'Facultades')
     
 
     class Meta:

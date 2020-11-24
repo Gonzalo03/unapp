@@ -28,7 +28,7 @@ class User(models.Model):
     dni = models.CharField('DNI', max_length=50, null=True)
     email = models.EmailField('Email', max_length=254)
     password = models.CharField('Contraseña', max_length=50)
-    token = models.CharField('Token', max_length=50)
+    token = models.CharField('Token', max_length=500)
     school = models.ManyToManyField(School, verbose_name = 'Facultad/es')
 
     class Meta:
