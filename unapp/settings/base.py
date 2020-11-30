@@ -35,7 +35,8 @@ INSTALLED_APPS = [
     'applications.notification',
     'applications.user',
     #third-part apps
-    'rest_framework'
+    'rest_framework',
+    'corsheaders'
     
 ]
 
@@ -49,6 +50,15 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
+
+MIDDLEWARE_CLASSES = (
+       'corsheaders.middleware.CorsMiddleware',  
+       'django.middleware.common.CommonMiddleware',  
+       'django.middleware.csrf.CsrfViewMiddleware',
+       'django.contrib.sessions.middleware.SessionMiddleware',
+       
+       
+)
 
 ROOT_URLCONF = 'unapp.urls'
 
@@ -102,5 +112,5 @@ USE_L10N = True
 
 USE_TZ = True
 
-
+#CSRF PROTECTION
 

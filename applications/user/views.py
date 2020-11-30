@@ -8,7 +8,6 @@ from django.http import HttpResponse, JsonResponse
 from django.utils.decorators import method_decorator
 from django.views.decorators.csrf import csrf_exempt
 
-
 from .models import User, School
 
 
@@ -26,6 +25,7 @@ class UserRegister(View):
     def get(self, request):
 
         return HttpResponse('Aqui es el registro de usuarios')
+
 
     def post(self, request):
         
@@ -80,11 +80,10 @@ class UserLogin(View):
         return True if userDNI and userPass else False
 
 class SchoolsJSON(View):
-    
+        
     def get(self, request):
 
         return JsonResponse({'facultades' : [model_to_dict(s) for s in School.objects.all()]})
-
 
 
 
